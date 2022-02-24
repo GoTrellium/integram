@@ -42,7 +42,7 @@ services:
       - INTEGRAM_PORT
       - INTEGRAM_BASE_URL
   trello:
-    image: trellium/trello:latest
+    image: gotrellium/trello:v1 
     restart: always
     links:
       - mongo
