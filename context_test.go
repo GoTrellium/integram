@@ -7,22 +7,23 @@ import (
 	"time"
 
 	"bytes"
+	"crypto/md5"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	log "github.com/sirupsen/logrus"
-	"github.com/gin-gonic/gin"
-	"github.com/mrjones/oauth"
-	"github.com/requilence/url"
-	"golang.org/x/oauth2"
-	"gopkg.in/mgo.v2"
-	tg "github.com/requilence/telegram-bot-api"
 	"io"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
-	"crypto/md5"
+
+	"github.com/gin-gonic/gin"
+	"github.com/mrjones/oauth"
+	tg "github.com/requilence/telegram-bot-api"
+	"github.com/requilence/url"
+	log "github.com/sirupsen/logrus"
+	"golang.org/x/oauth2"
+	"gopkg.in/mgo.v2"
 )
 
 func TestContext_SetServiceBaseURL(t *testing.T) {
@@ -667,7 +668,7 @@ func TestContext_EditPressedMessageText(t *testing.T) {
 		time.Sleep(time.Millisecond * 1000)
 
 		msg, _ := findMessageByBsonID(db, msg.ID)
-		textHash:=fmt.Sprintf(fmt.Sprintf("%x", md5.Sum([]byte(tt.args.text))))
+		textHash := fmt.Sprintf(fmt.Sprintf("%x", md5.Sum([]byte(tt.args.text))))
 		if msg.om.TextHash != textHash {
 			t.Errorf("%q. Context.EditPressedMessageText() db check got text hash = %s, want %s", tt.name, msg.om.TextHash, textHash)
 		}
@@ -896,9 +897,9 @@ func TestContext_EditMessageText(t *testing.T) {
 		}
 		time.Sleep(time.Millisecond * 100)
 		msg, _ := findMessageByBsonID(db, msg.ID)
-		textHash:=fmt.Sprintf(fmt.Sprintf("%x", md5.Sum([]byte(tt.args.text))))
+		textHash := fmt.Sprintf(fmt.Sprintf("%x", md5.Sum([]byte(tt.args.text))))
 
-		if msg.om.TextHash !=  textHash {
+		if msg.om.TextHash != textHash {
 			t.Errorf("%q. Context.EditMessageText() db check got text hash = %s, want %s", tt.name, msg.om.TextHash, textHash)
 		}
 
@@ -996,7 +997,7 @@ func TestContext_EditMessagesWithEventID(t *testing.T) {
 		wantErr    bool
 	}{
 		{"test1", fields{ServiceName: "servicewithbottoken", db: db, User: User{ID: chatID}, Chat: Chat{ID: chatID}}, args{msg.EventID[0], "kbstateval", fmt.Sprintf("EditMessagesTextWithEventID: edited msg with event id <b>%s</b> 1", msg.EventID[0]), msg.om.InlineKeyboardMarkup}, 1, false},
-		{"test2", fields{ServiceName: "servicewithbottoken", db: db, User: User{ID: chatID}, Chat: Chat{ID: chatID}}, args{msg.EventID[0], "",           fmt.Sprintf("EditMessagesTextWithEventID: edited msg with event id <b>%s</b> 2", msg.EventID[0]), msg.om.InlineKeyboardMarkup}, 2, false},
+		{"test2", fields{ServiceName: "servicewithbottoken", db: db, User: User{ID: chatID}, Chat: Chat{ID: chatID}}, args{msg.EventID[0], "", fmt.Sprintf("EditMessagesTextWithEventID: edited msg with event id <b>%s</b> 2", msg.EventID[0]), msg.om.InlineKeyboardMarkup}, 2, false},
 	}
 	for _, tt := range tests {
 		c := &Context{
