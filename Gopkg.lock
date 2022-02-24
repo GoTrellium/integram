@@ -164,8 +164,8 @@
     "store/memstore",
   ]
   pruneopts = ""
-  revision = "def5708c45a0d2b2b9a3604521f3164e227d2c83"
-  version = "v2.2.4"
+  revision = "71faaab376ce13fe411dfbb5bbc5f0708b366791"
+  version = "v2.2.5"
 
 [[projects]]
   digest = "1:2e7f653483e51243b6cd6de60ce39bde0d6927d10a3c24295ab0f82cb1efeae2"
