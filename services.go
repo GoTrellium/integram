@@ -24,6 +24,7 @@ import (
 )
 
 const standAloneServicesFileName = "standAloneServices.json"
+
 // Map of Services configs per name. See Register func
 var serviceMapMutex = sync.RWMutex{}
 var services = make(map[string]*Service)
@@ -57,8 +58,8 @@ type Service struct {
 
 	JobsPool int // Worker pool to be created for service. Default to 1 worker. Workers will be inited only if jobs types are available
 
-	JobOldPrefix 	string
-	Jobs []Job // Job types that can be scheduled
+	JobOldPrefix string
+	Jobs         []Job // Job types that can be scheduled
 
 	Modules []Module // you can inject modules and use it across different services
 
@@ -361,7 +362,7 @@ func saveStandAloneServicesToFile() error {
 		return err
 	}
 
-	return ioutil.WriteFile(Config.ConfigDir + string(os.PathSeparator) + standAloneServicesFileName, jsonData, 0655)
+	return ioutil.WriteFile(Config.ConfigDir+string(os.PathSeparator)+standAloneServicesFileName, jsonData, 0655)
 }
 
 func (s *Service) getShortFuncPath(actionFunc interface{}) string {
@@ -372,15 +373,15 @@ func (s *Service) getShortFuncPath(actionFunc interface{}) string {
 	return s.trimFuncPath(fullPath)
 }
 
-func (s *Service) trimFuncPath(fullPath string) string{
+func (s *Service) trimFuncPath(fullPath string) string {
 	// Trim funcPath for a specific service name and determined service's rootPackagePath
-	// trello, github.com/requilence/integram/services/trello, github.com/requilence/integram/services/trello.cardReplied -> trello.cardReplied
-	// trello, github.com/requilence/integram/services/Trello, github.com/requilence/integram/services/Trello.cardReplied -> trello.cardReplied
+	// trello, github.com/GoTrellium/integram/services/trello, github.com/GoTrellium/integram/services/trello.cardReplied -> trello.cardReplied
+	// trello, github.com/GoTrellium/integram/services/Trello, github.com/GoTrellium/integram/services/Trello.cardReplied -> trello.cardReplied
 	// trello, github.com/requilence/trelloRepo, _/var/integram/trello.cardReplied -> trello.cardReplied
 	// trello, github.com/requilence/trelloRepo, _/var/integram/another.cardReplied -> trello.cardReplied
-	// trello, github.com/requilence/integram/services/trello, github.com/requilence/integram/services/trello/another.action -> trello/another.action
-	// trello, github.com/requilence/integram/services/trello, _/var/integram/trello.cardReplied -> trello.cardReplied
-	// trello, trello.cardReplied, github.com/requilence/integram/services/trello.cardReplied -> trello.cardReplied
+	// trello, github.com/GoTrellium/integram/services/trello, github.com/GoTrellium/integram/services/trello/another.action -> trello/another.action
+	// trello, github.com/GoTrellium/integram/services/trello, _/var/integram/trello.cardReplied -> trello.cardReplied
+	// trello, trello.cardReplied, github.com/GoTrellium/integram/services/trello.cardReplied -> trello.cardReplied
 	if s.rootPackagePath != "" && strings.HasPrefix(fullPath, s.rootPackagePath) {
 		internalFuncPath := strings.TrimPrefix(fullPath, s.rootPackagePath)
 		return s.Name + internalFuncPath
@@ -483,7 +484,7 @@ func Register(servicer Servicer, botToken string) {
 
 			jobType, err := jobs.RegisterTypeWithPoolKey(jobName, "_"+service.Name, job.Retries, job.HandlerFunc)
 			if err != nil {
-				fmt.Errorf("RegisterTypeWithPoolKey '%s', for %s: %s", jobName, service.Name, err.Error() )
+				fmt.Errorf("RegisterTypeWithPoolKey '%s', for %s: %s", jobName, service.Name, err.Error())
 			} else {
 				jobsPerService[service.Name][jobName] = jobType
 			}

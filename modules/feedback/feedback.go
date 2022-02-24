@@ -4,12 +4,12 @@ package feedback
 
 import (
 	"fmt"
-	"github.com/requilence/integram"
+	"github.com/GoTrellium/integram"
 	"time"
 
+	"errors"
 	"github.com/kelseyhightower/envconfig"
 	"math/rand"
-	"errors"
 )
 
 var FeedbackModule = integram.Module{

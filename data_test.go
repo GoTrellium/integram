@@ -8,13 +8,13 @@ import (
 
 	"fmt"
 	"github.com/gin-gonic/gin"
+	tg "github.com/requilence/telegram-bot-api"
 	"github.com/requilence/url"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	tg "github.com/requilence/telegram-bot-api"
-	"strings"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func clearData() {
@@ -1524,7 +1524,7 @@ func TestUser_OAuthHTTPClient(t *testing.T) {
 		fields fields
 		want   *http.Client
 	}{
-	// TODO: Add test cases.
+		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
 		user := &User{
@@ -1687,8 +1687,8 @@ func TestUser_SetAfterAuthAction(t *testing.T) {
 		wantUserData *userData
 		wantErr      bool
 	}{
-		{"set from empty", fields{ID: 9999999999, ctx: &Context{db: db, ServiceName: "servicewithoauth2"}}, args{dumbFuncWithContextAndParam, []interface{}{true}}, &userData{Protected: map[string]*userProtected{"servicewithoauth2": {AfterAuthHandler: "github.com/requilence/integram.dumbFuncWithContextAndParam", AfterAuthData: []byte{12, 255, 129, 2, 1, 2, 255, 130, 0, 1, 16, 0, 0, 13, 255, 130, 0, 1, 4, 98, 111, 111, 108, 2, 2, 0, 1}}}}, false},
-		{"override exists value", fields{ID: 9999999999, ctx: &Context{db: db, ServiceName: "servicewithoauth2"}}, args{dumbFuncWithContextAndParams, []interface{}{1, 2}}, &userData{Protected: map[string]*userProtected{"servicewithoauth2": {AfterAuthHandler: "github.com/requilence/integram.dumbFuncWithContextAndParams", AfterAuthData: []byte{12, 255, 129, 2, 1, 2, 255, 130, 0, 1, 16, 0, 0, 20, 255, 130, 0, 2, 3, 105, 110, 116, 4, 2, 0, 2, 3, 105, 110, 116, 4, 2, 0, 4}}}}, false},
+		{"set from empty", fields{ID: 9999999999, ctx: &Context{db: db, ServiceName: "servicewithoauth2"}}, args{dumbFuncWithContextAndParam, []interface{}{true}}, &userData{Protected: map[string]*userProtected{"servicewithoauth2": {AfterAuthHandler: "github.com/GoTrellium/integram.dumbFuncWithContextAndParam", AfterAuthData: []byte{12, 255, 129, 2, 1, 2, 255, 130, 0, 1, 16, 0, 0, 13, 255, 130, 0, 1, 4, 98, 111, 111, 108, 2, 2, 0, 1}}}}, false},
+		{"override exists value", fields{ID: 9999999999, ctx: &Context{db: db, ServiceName: "servicewithoauth2"}}, args{dumbFuncWithContextAndParams, []interface{}{1, 2}}, &userData{Protected: map[string]*userProtected{"servicewithoauth2": {AfterAuthHandler: "github.com/GoTrellium/integram.dumbFuncWithContextAndParams", AfterAuthData: []byte{12, 255, 129, 2, 1, 2, 255, 130, 0, 1, 16, 0, 0, 20, 255, 130, 0, 2, 3, 105, 110, 116, 4, 2, 0, 2, 3, 105, 110, 116, 4, 2, 0, 4}}}}, false},
 	}
 	for _, tt := range tests {
 		user := &User{

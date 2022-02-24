@@ -42,7 +42,7 @@ services:
       - INTEGRAM_PORT
       - INTEGRAM_BASE_URL
   trello:
-    image: integram/trello:latest
+    image: trellium/trello:latest
     restart: always
     links:
       - mongo
@@ -61,46 +61,7 @@ services:
       - TRELLO_BOT_TOKEN
       - TRELLO_OAUTH_ID
       - TRELLO_OAUTH_SECRET
-  gitlab:
-    image: integram/gitlab
-    restart: always
-    links:
-      - mongo
-      - redis
-    depends_on:
-      - integram
-    environment:
-      - TZ=UTC
-      - INTEGRAM_PORT=7000
-      - INTEGRAM_MONGO_URL=mongodb://mongo:27017/integram
-      - INTEGRAM_REDIS_URL=redis:6379
-      - INTEGRAM_INSTANCE_MODE=multi-service
-
-      ## required ENV vars
-      - INTEGRAM_BASE_URL
-      - GITLAB_BOT_TOKEN
-      - GITLAB_OAUTH_ID
-      - GITLAB_OAUTH_SECRET
-  bitbucket:
-    image: integram/bitbucket
-    restart: always
-    links:
-      - mongo
-      - redis
-    depends_on:
-      - integram
-    environment:
-      - TZ=UTC
-      - INTEGRAM_PORT=7000
-      - INTEGRAM_MONGO_URL=mongodb://mongo:27017/integram
-      - INTEGRAM_REDIS_URL=redis:6379
-      - INTEGRAM_INSTANCE_MODE=multi-service
-
-      ## required ENV vars
-      - INTEGRAM_BASE_URL
-      - BITBUCKET_BOT_TOKEN
-      - BITBUCKET_OAUTH_ID
-      - BITBUCKET_OAUTH_SECRET
+  
   webhook:
     image: integram/webhook
     restart: always
