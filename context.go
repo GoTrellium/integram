@@ -12,17 +12,18 @@ import (
 	"strings"
 	"time"
 
+	"os"
+	"path/filepath"
+
 	"github.com/gin-gonic/gin"
 	"github.com/kennygrant/sanitize"
 	"github.com/mrjones/oauth"
-	"github.com/requilence/url"
 	tg "github.com/requilence/telegram-bot-api"
+	"github.com/requilence/url"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/oauth2"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"os"
-	"path/filepath"
 )
 
 // MaxMsgsToUpdateWithEventID set the maximum number of last messages to update with EditMessagesTextWithEventID
@@ -43,7 +44,7 @@ type Context struct {
 
 	Callback              *callback  // Telegram inline buttons callback if it it triggired current request
 	inlineQueryAnsweredAt *time.Time // used to log slow inline responses
-	messageAnsweredAt *time.Time 	 // used to log slow messages responses
+	messageAnsweredAt     *time.Time // used to log slow messages responses
 
 }
 
@@ -494,12 +495,10 @@ func (c *Context) EditMessageText(om *OutgoingMessage, text string) error {
 	prevTextHash := om.TextHash
 	om.TextHash = om.GetTextHash()
 
-
 	if om.TextHash == prevTextHash {
 		c.Log().Debugf("EditMessageText – message (_id=%s botid=%v id=%v) not updated text have not changed", om.ID.Hex(), bot.ID, om.MsgID)
 		return nil
 	}
-
 
 	_, err := bot.API.Send(tg.EditMessageTextConfig{
 		BaseEdit: tg.BaseEdit{
@@ -509,7 +508,7 @@ func (c *Context) EditMessageText(om *OutgoingMessage, text string) error {
 		},
 		ParseMode:             om.ParseMode,
 		DisableWebPagePreview: !om.WebPreview,
-		Text: text,
+		Text:                  text,
 	})
 	if err != nil {
 		if err.(tg.Error).IsCantAccessChat() || err.(tg.Error).ChatMigrated() {
@@ -699,7 +698,6 @@ func (c *Context) EditMessageTextAndInlineKeyboard(om *OutgoingMessage, fromStat
 		}
 	}
 
-
 	_, err = bot.API.Send(tg.EditMessageTextConfig{
 		BaseEdit: tg.BaseEdit{
 			ChatID:          om.ChatID,
@@ -707,8 +705,8 @@ func (c *Context) EditMessageTextAndInlineKeyboard(om *OutgoingMessage, fromStat
 			MessageID:       om.MsgID,
 			ReplyMarkup:     &tg.InlineKeyboardMarkup{InlineKeyboard: tgKeyboard},
 		},
-		ParseMode: om.ParseMode,
-		Text:      text,
+		ParseMode:             om.ParseMode,
+		Text:                  text,
 		DisableWebPagePreview: !om.WebPreview,
 	})
 
